@@ -1,0 +1,19 @@
+{
+  "name": "My Zikir - Daily Zikir Tracker",
+  "short_name": "My Zikir",
+  "description": "ব্যক্তিগত দৈনিক জিকির ট্র্যাকার",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f7f4",
+  "theme_color": "#123f36",
+  "lang": "bn",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

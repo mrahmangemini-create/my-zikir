@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#123f36">
+<meta name="description" content="ব্যক্তিগত দৈনিক জিকির ট্র্যাকার">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<title>My Zikir</title>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="brand-icon">☾</div><div><h1>My Zikir</h1><small>আমার প্রতিদিনের জিকির</small></div></div>
+  <div class="greeting"><div><h2>আসসালামু আলাইকুম</h2><p>আপনার ইবাদতের দৈনিক হিসাব</p></div><span class="star">✦</span></div>
+  <nav class="tabs" aria-label="প্রধান মেনু">
+    <button class="tab active" data-screen="dashboard">ড্যাশবোর্ড</button>
+    <button class="tab" data-screen="entry">নতুন এন্ট্রি</button>
+    <button class="tab" data-screen="history">ইতিহাস</button>
+    <button class="tab" data-screen="settings">সেটিংস</button>
+  </nav>
+</header>
+
+<main>
+<section id="dashboard" class="screen active">
+  <div class="section-title"><div><h2>আজকের ড্যাশবোর্ড</h2><p id="todayLabel"></p></div><span class="pill" id="dbStatus">লোকাল ডেটা</span></div>
+  <div class="hero-card">
+    <div class="muted">আজকের মোট জিকির</div>
+    <div class="big-number" id="todayTotal">০</div>
+    <div class="goal-line"><span>দৈনিক লক্ষ্য <b id="overallGoalLabel">৫,০০০</b></span><b id="overallPercent">০%</b></div>
+    <div class="progress"><span id="overallBar"></span></div>
+    <small id="remainingLabel">লক্ষ্য পূরণে বাকি ৫,০০০</small>
+  </div>
+  <div class="stats-grid">
+    <div class="stat mint"><span>আজকের লক্ষ্য</span><strong id="goalCard">৫,০০০</strong></div>
+    <div class="stat peach"><span>অবশিষ্ট</span><strong id="remainingCard">৫,০০০</strong></div>
+  </div>
+  <div class="panel">
+    <div class="panel-heading"><h3>জিকির অনুযায়ী বিস্তারিত</h3><span>আজ</span></div>
+    <div id="zikirBreakdown" class="breakdown"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-heading"><h3>জিকিরের অনুপাত</h3><span>আজ</span></div>
+    <div class="chart-wrap"><canvas id="distribution" height="220" aria-label="জিকিরের অনুপাত চার্ট"></canvas><div id="chartLegend" class="legend"></div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-heading"><h3>সাপ্তাহিক অগ্রগতি</h3><span>শেষ ৭ দিন</span></div>
+    <canvas id="weekly" height="220" aria-label="সাপ্তাহিক জিকির চার্ট"></canvas>
+  </div>
+</section>
+
+<section id="entry" class="screen">
+  <div class="section-title"><div><h2>দৈনিক জিকির এন্ট্রি</h2><p>প্রতিটি জিকিরের সংখ্যা লিখুন</p></div></div>
+  <form id="entryForm">
+    <label class="field-label" for="entryDate">তারিখ নির্বাচন করুন</label>
+    <input id="entryDate" type="date" required>
+    <div id="entryFields" class="entry-fields"></div>
+    <div class="total-preview"><span>মোট জিকির (Preview)</span><strong id="entryTotal">০</strong></div>
+    <div class="button-row">
+      <button class="primary" type="submit">✓ সংরক্ষণ করুন</button>
+      <button class="secondary" type="button" id="clearEntry">মুছুন</button>
+    </div>
+    <p class="hint">একই তারিখের এন্ট্রি আবার সংরক্ষণ করলে আগের সংখ্যাগুলো আপডেট হবে; ডুপ্লিকেট তৈরি হবে না।</p>
+    <p id="saveMessage" class="message" role="status"></p>
+  </form>
+</section>
+
+<section id="history" class="screen">
+  <div class="section-title"><div><h2>জিকিরের ইতিহাস</h2><p>তারিখ অনুযায়ী সংরক্ষিত হিসাব</p></div></div>
+  <div id="historyList" class="history-list"></div>
+</section>
+
+<section id="settings" class="screen">
+  <div class="section-title"><div><h2>সেটিংস ও ব্যাকআপ</h2><p>লক্ষ্য ও ডেটা ব্যবস্থাপনা</p></div></div>
+  <div class="panel">
+    <label class="field-label" for="overallGoal">সব জিকির মিলিয়ে দৈনিক লক্ষ্য</label>
+    <input id="overallGoal" type="number" min="0" step="1" value="5000">
+    <button id="saveGoal" class="primary full">লক্ষ্য সংরক্ষণ</button>
+  </div>
+  <div class="panel">
+    <h3>ডেটা ব্যাকআপ</h3>
+    <p class="hint">আপনার রেকর্ড JSON ফাইলে Export করতে পারবেন এবং পরে Restore করতে পারবেন।</p>
+    <div class="button-row">
+      <button id="exportBtn" class="primary">Backup Export</button>
+      <label class="secondary file-label">Backup Restore<input id="importFile" type="file" accept="application/json,.json" hidden></label>
+    </div>
+    <p id="backupMessage" class="message" role="status"></p>
+  </div>
+  <div class="panel">
+    <h3>ডেটা কোথায় থাকে?</h3>
+    <p class="hint">এই অ্যাপের রেকর্ড আপনার এই ব্রাউজারের IndexedDB-তে থাকে। Browser data clear বা অ্যাপ uninstall করলে ডেটা হারাতে পারে। তাই নিয়মিত Backup Export করে ফোনের নিরাপদ Folder-এ রাখুন।</p>
+    <p class="hint">এটি কোনো Cloud Server-এ আপনার জিকিরের তথ্য পাঠায় না।</p>
+  </div>
+</section>
+</main>
+<footer>My Zikir · ব্যক্তিগত জিকির ট্র্যাকার · Offline-ready</footer>
+<script src="app.js"></script>
+</body>
+</html>
